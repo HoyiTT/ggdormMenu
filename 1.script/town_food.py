@@ -10,8 +10,16 @@ def makelist(url):
     # print(soup.select_one('table.foodMenuTable'))
     #m_5_5 > div
     title = soup.select('tbody > tr > td')
-    print(title[0].text)
+    # print(title[7].text)
     return title
+
+def monday(url):
+    htmllist = makelist(url)
+    for i in range(0,30,5):
+        print(htmllist[i].text)
+        print()
+    
 
 url1 = "http://www.ggdorm.or.kr/home/main_kr/main.php?ctt=../contents_kr/m_5_5&mc=1|5|1"
 htmllist = makelist(url1)
+monday(url1)
