@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@200;300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>오늘의 메뉴</title>
+</head>
+<body>
+    <div class="container">
+        <h2><button class="previous">지난 달</button>오늘의 식단<button class="next">다음 달</button></h2>
+        <p>today`s diet</p>
+        
+        <div class="breakfast">
+            <h3 style="color: blue;">아침식단</h3>
+            <div class="menulist">
+                {{todayBreakfast}}
+            </div>
+        </div>
+        
+        <div class="lunch">
+            <h3 style="color: orange;">점심식단</h3>
+            <div class="menulist">
+                {{todayLunch}}
+            </div>
+        </div>
+        
+        <div class="dinner">
+            <h3 style="color: purple;">저녁식단</h3>
+            <div class="menulist">
+                {{todayDinner}}
+            </div>
+        </div>
+
+        <div class="gansik">
+            <h3 style="color: red;">간식식단</h3>
+            <div class="menulist">
+                {{todaySnack}}
+            </div>
+        </div>
+        <iframe src="https://www.youtube.com/embed/gfk3QLU1x0E?autoplay=1&mute=1&si=EzJi20zT9hvW3bqw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <img src="{{ url_for('static', filename='img/ddabong.jpg') }}" class="picture">
+    </div>
+</body>
+</html>
