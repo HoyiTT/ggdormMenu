@@ -21,9 +21,8 @@ def makelist(url):
     # print(title[7].text)
     return title
 
-def getBreakfast(url):
+def getBreakfast(url,today):
     htmllist = makelist(url)
-    today = datetime.today().weekday()
     if today == 6:
         today = 0
     else:
@@ -31,27 +30,24 @@ def getBreakfast(url):
     return htmllist[(today*4)].text
 
 
-def getLunch(url):
+def getLunch(url, today):
     htmllist = makelist(url)
-    today = datetime.today().weekday()
     if today == 6:
         today = 0
     else:
         today += 1
     return htmllist[(today*4 + 1)].text
 
-def getDinner(url):
+def getDinner(url, today):
     htmllist = makelist(url)
-    today = datetime.today().weekday()
     if today == 6:
         today = 0
     else:
         today += 1
     return htmllist[(today * 4 + 2)].text
     
-def getSnack(url):
+def getSnack(url, today):
     htmllist = makelist(url)
-    today = datetime.today().weekday()
     if today == 6:
         today = 0
     else:
@@ -62,11 +58,24 @@ def getSnack(url):
 @app.route('/')
 def index():
     url1 = "http://www.ggdorm.or.kr/home/main_kr/main.php?ctt=../contents_kr/m_5_5&mc=1|5|1"
-    today = str(datetime.today().weekday())
-    breakfast = getBreakfast(url1)
-    lunch = getLunch(url1)
-    dinner = getDinner(url1)
-    snack = getSnack(url1)
+    today = datetime.today().weekday()
+    breakfast = getBreakfast(url1,today)
+    lunch = getLunch(url1, today)
+    dinner = getDinner(url1, today)
+    snack = getSnack(url1, today)
+    return render_template('index.html',todayBreakfast = breakfast,todayLunch = lunch, todayDinner = dinner, todaySnack = snack)
+
+
+@app.route('/nextday')
+def ndextday():
+    url1 = "http://www.ggdorm.or.kr/home/main_kr/main.php?ctt=../contents_kr/m_5_5&mc=1|5|1"
+    today = datetime.today().weekday() + 1
+    if today == 7:
+        today = 0
+    breakfast = getBreakfast(url1, today)
+    lunch = getLunch(url1, today)
+    dinner = getDinner(url1, today)
+    snack = getSnack(url1, today)
     return render_template('index.html',todayBreakfast = breakfast,todayLunch = lunch, todayDinner = dinner, todaySnack = snack)
  
  
