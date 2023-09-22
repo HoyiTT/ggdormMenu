@@ -79,7 +79,7 @@ def ndextday():
     return render_template('index.html',todayBreakfast = breakfast,todayLunch = lunch, todayDinner = dinner, todaySnack = snack)
  
  
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0',port='5001')
 
 
     
