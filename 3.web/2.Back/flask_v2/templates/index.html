@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>오늘의 메뉴</title>
+</head>
+<body>
+    <div class="container">
+        <h2> 경기도 기숙사 오늘의 메뉴</h2>
+        <form action="/" method="get">
+            <select name="day" aria-label="요일 선택">
+                {% for index in range(days|length) %}
+                <option value="{{ index }}" {% if index == day %}selected{% endif %}>{{ days[index] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">요일로 메뉴 보기</button>
+        </form>
+        <div>
+            <p>오늘은 {{ todayDate }} {{defaultdays}}입니다.</p>
+        </div>
+        <div class="breakfast">
+            <h3 style="color: blue;">아침식단</h3>
+            <div class="menulist">{{ todayBreakfast }}</div>
+        </div>
+        <div class="lunch">
+            <h3 style="color: orange;">점심식단</h3>
+            <div class="menulist">{{ todayLunch }}</div>
+        </div>
+        <div class="dinner">
+            <h3 style="color: purple;">저녁식단</h3>
+            <div class="menulist">{{ todayDinner }}</div>
+        </div>
+        <div class="gansik">
+            <h3 style="color: red;">간식식단</h3>
+            <div class="menulist">{{ todaySnack }}</div>
+        </div>
+        <div class="footer">
+            문의는 pjs9177@naver.com으로 해주시기 바랍니다.
+        </div> 
+    </div>
+    
+</body>
+</html>
