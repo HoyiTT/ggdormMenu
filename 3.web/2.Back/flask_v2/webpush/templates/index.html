@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Push Notification Example</title>
+    <script>
+    function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+    
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const pushButton = document.getElementById('pushButton');
+
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            navigator.serviceWorker.register('static/sw.js').then(function (swReg) {
+                console.log('Service Worker is registered', swReg);
+
+                pushButton.addEventListener('click', function () {
+                    subscribeUserToPush();
+                });
+            }).catch(function (error) {
+                console.error('Service Worker Error', error);
+            });
+        } else {
+            console.warn('Push messaging is not supported');
+            pushButton.textContent = 'Push Not Supported';
+        }
+
+        function subscribeUserToPush() {
+    console.log('Attempting to subscribe to push...');
+    navigator.serviceWorker.ready.then(function(swRegistration) {
+        console.log('Service Worker is ready for push subscription.');
+        return swRegistration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array('MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoJIay0+K25VanPd5qqvgQU4E4D+8e+55B5nuTA1Q+1e5BcedoS5yW6aI29fmQu02ygSFpRe5k6Fx4XhYUr/Baw==')
+        });
+    }).then(function(subscription) {
+        console.log('User is subscribed:', subscription);
+        return fetch('/subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(subscription)
+        });
+    }).then(function(response) {
+        console.log('Subscription response:', response);
+    }).catch(function(error) {
+        console.error('Failed to subscribe the user:', error);
+    });
+}
+    });
+    </script>
+</head>
+<body>
+    <h1>Flask Push Notification Example</h1>
+    <button id="pushButton">Enable Push Notifications</button>
+</body>
+</html>
