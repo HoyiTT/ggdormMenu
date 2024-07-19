@@ -81,16 +81,23 @@
 
         // 모바일 브라우저에서만 add-to-home-screen 표시
         window.addEventListener('load', function () {
-            if (!window.navigator.standalone && /Mobi|Android/i.test(navigator.userAgent)) {
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+            if (!isStandalone && isMobile) {
                 console.log('Displaying add-to-home-screen'); // 추가된 로그
                 document.getElementById('add-to-home-screen').style.display = 'block';
                 console.log('add-to-home-screen element:', document.getElementById('add-to-home-screen')); // 추가된 로그
+                document.getElementById('scan-qr-code').style.display = 'none'; // 안드로이드에서 숨기기
             } else {
-                console.log('Not a mobile browser');
+                console.log('Not a mobile browser or running in standalone mode');
             }
+
             // PWA로 열렸을 때 .wrapper 표시
-            if (window.matchMedia('(display-mode: standalone)').matches) {
+            if (isStandalone) {
                 document.querySelector('.container').style.display = 'block';
+                document.getElementById('add-to-home-screen').style.display = 'none'; // PWA에서 숨기기
+                document.getElementById('scan-qr-code').style.display = 'none'; // PWA에서 숨기기
             }
         });
     </script>
