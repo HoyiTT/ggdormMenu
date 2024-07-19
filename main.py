@@ -5,8 +5,10 @@ from datetime import datetime
 from collections import defaultdict
 import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # 접속자 수를 저장할 딕셔너리
 visitor_count = defaultdict(int)
