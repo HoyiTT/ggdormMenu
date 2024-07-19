@@ -1,10 +1,16 @@
-from flask import Flask, render_template, request,send_file
+from flask import Flask, render_template, request, send_file
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from collections import defaultdict
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
 
+# 접속자 수를 저장할 딕셔너리
+visitor_count = defaultdict(int)
+total_visitors = 0
 
 def fetch_menu(url, day_offset):
     try:
@@ -24,7 +30,20 @@ def fetch_menu(url, day_offset):
     except IndexError:
         return "데이터가 없습니다.", "", "", ""
 
+def save_daily_visitors():
+    global total_visitors
+    todayDate = datetime.today().strftime('%Y-%m-%d')
+    today_visitors = visitor_count[todayDate]
+    with open('daily_visitors.txt', 'a') as f:
+        f.write(f"{todayDate}: {today_visitors}\n")
+    total_visitors += today_visitors
+    visitor_count.clear()
 
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=save_daily_visitors, trigger="cron", hour=0, minute=0)
+scheduler.start()
+
+atexit.register(lambda: scheduler.shutdown())
 
 @app.route('/manifest.json')
 def serve_manifest():
@@ -33,7 +52,6 @@ def serve_manifest():
 @app.route('/static/sw.js')
 def serve_sw():
     return send_file('static/sw.js', mimetype='application/javascript')
-
 
 @app.route('/')
 def index():
@@ -44,7 +62,11 @@ def index():
     todayDate = datetime.today().strftime('%Y-%m-%d')
     defaultdays = days[(int(datetime.today().weekday())+1) % 7]
 
-    return render_template('index.html', days=days, day=day_offset, todayDate = todayDate, defaultdays = defaultdays, todayBreakfast=breakfast, todayLunch=lunch, todayDinner=dinner, todaySnack=snack)
+    # 오늘 날짜의 접속자 수 증가
+    visitor_count[todayDate] += 1
+    today_visitors = visitor_count[todayDate]
+
+    return render_template('index.html', days=days, day=day_offset, todayDate=todayDate, defaultdays=defaultdays, todayBreakfast=breakfast, todayLunch=lunch, todayDinner=dinner, todaySnack=snack, todayVisitors=today_visitors, totalVisitors=total_visitors)
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
-
