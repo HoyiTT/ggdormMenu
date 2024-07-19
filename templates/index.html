@@ -10,6 +10,7 @@
     <link rel="apple-touch-icon" href="{{url_for('static', filename='icons/icon_192x192.png')}}" type="image/png">
     <link rel="apple-touch-icon" href="{{url_for('static', filename='icons/icon_512x512.png')}}" type="image/png">
     <link rel="manifest" href="static/manifest.json">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         body {
         background-color: #cfc7e2;
@@ -17,9 +18,10 @@
         font-size: 18px;
         padding-bottom: 50px;
         }
-        .wrapper {
+        .container {
         max-width: 800px;
         margin: 0 auto;
+        display: none;
         }
         @supports (-webkit-touch-callout: none) {
         #scan-qr-code {
@@ -84,6 +86,10 @@
             } else {
                 console.log('Not a mobile browser');
             }
+            // PWA로 열렸을 때 .wrapper 표시
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                document.querySelector('.container').style.display = 'block';
+            }
         });
     </script>
 </head>
@@ -107,6 +113,41 @@
                 아래 QR코드를 스마트폰에서 스캔해주세요.
                 <br>
                 <img src="static/images/qrcode.png" alt="qrCode"><br><br>
+            </div>
+
+            <div id="menu-list">
+                <div class="container">
+                    <form action="/" method="get">
+                        <select name="day" aria-label="요일 선택">
+                            {% for index in range(days|length) %}
+                            <option value="{{ index }}" {% if index == day %}selected{% endif %}>{{ days[index] }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">요일로 메뉴 보기</button>
+                    </form>
+                    <div>
+                        <p>오늘은 {{ todayDate }} {{defaultdays}}입니다.</p>
+                    </div>
+                    <div class="breakfast">
+                        <h3 style="color: blue;">아침식단</h3>
+                        <div class="menulist">{{ todayBreakfast }}</div>
+                    </div>
+                    <div class="lunch">
+                        <h3 style="color: orange;">점심식단</h3>
+                        <div class="menulist">{{ todayLunch }}</div>
+                    </div>
+                    <div class="dinner">
+                        <h3 style="color: purple;">저녁식단</h3>
+                        <div class="menulist">{{ todayDinner }}</div>
+                    </div>
+                    <div class="gansik">
+                        <h3 style="color: red;">간식식단</h3>
+                        <div class="menulist">{{ todaySnack }}</div>
+                    </div>
+                    <div class="footer">
+                        문의는 pjs9177@naver.com으로 해주시기 바랍니다.
+                    </div> 
+                </div>
             </div>
 
             <button id="subscribe_btn" onclick="subscribeToPush()">Subscribe to notifications</button>
