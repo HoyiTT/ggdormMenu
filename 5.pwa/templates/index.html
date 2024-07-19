@@ -1,0 +1,177 @@
+<html>
+
+<head>
+    <meta name="theme-color" content="#317EFB" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{{url_for('static', filename='icons/icon_144x144.png')}}" type="image/png">
+    <link rel="icon" href="{{url_for('static', filename='icons/icon_192x192.png')}}" type="image/png">
+    <link rel="icon" href="{{url_for('static', filename='icons/icon_512x512.png')}}" type="image/png">
+    <link rel="apple-touch-icon" href="{{url_for('static', filename='icons/icon_144x144.png')}}" type="image/png">
+    <link rel="apple-touch-icon" href="{{url_for('static', filename='icons/icon_192x192.png')}}" type="image/png">
+    <link rel="apple-touch-icon" href="{{url_for('static', filename='icons/icon_512x512.png')}}" type="image/png">
+    <link rel="manifest" href="static/manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+        background-color: #ffffff;
+        font-family: Arial, sans-serif;
+        font-size: 18px;
+        padding-bottom: 50px;
+        }
+        .container {
+        max-width: 800px;
+        margin: 0 auto;
+        display: none;
+        }
+        @supports (-webkit-touch-callout: none) {
+        #scan-qr-code {
+        display: none;
+        }
+        }
+        #add-to-home-screen {
+        display: none; /* display 속성을 block으로 변경 */
+        background-color: #cfc7e2;;
+        padding: 10px;
+        }
+        #add-to-home-screen img {
+        display: block;
+        margin: 0 auto;
+        padding-top: 10px;
+        max-height: 500px;
+        max-width: 100%;
+        }
+        #scan-qr-code img {
+        display: block;
+        max-width: 100%;
+        }
+        #subscribe_btn, #test_send_btn {
+        display: none;
+        width: 100%;
+        line-height: 2;
+        font-size: 20px;
+        margin-top: 10px;
+        }
+        #active_sub {
+        display: none;
+        background-color: #e7e7ff;
+        padding: 20px;
+        word-wrap: break-word;
+        }
+        #source_link {
+        position: fixed;
+        bottom: 10px;
+        color: #fff;
+        background-color: rgba(0,0,0,0.5);
+        padding: 5px;
+        left: 10px;
+        }
+
+    </style>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register("/static/sw.js").then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
+        // 모바일 브라우저에서만 add-to-home-screen 표시
+        window.addEventListener('load', function () {
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+            if (!isStandalone && isMobile) {
+                console.log('Displaying add-to-home-screen'); // 추가된 로그
+                document.getElementById('add-to-home-screen').style.display = 'block';
+                console.log('add-to-home-screen element:', document.getElementById('add-to-home-screen')); // 추가된 로그
+                document.getElementById('scan-qr-code').style.display = 'none'; // 안드로이드에서 숨기기
+            } else {
+                console.log('Not a mobile browser or running in standalone mode');
+            }
+
+            // PWA로 열렸을 때 .wrapper 표시
+            if (isStandalone) {
+                document.querySelector('.container').style.display = 'block';
+                document.getElementById('add-to-home-screen').style.display = 'none'; // PWA에서 숨기기
+                document.getElementById('scan-qr-code').style.display = 'none'; // PWA에서 숨기기
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+
+</div>
+    <div class="wrapper">
+        <div id="content">
+            <div class="title">경기도 기숙사 오늘의 메뉴</div>
+            <div id="add-to-home-screen">
+                경기도 기숙사 오늘의 메뉴를 이용하기 위해서는 아래 안내를 따라해주세요.
+                <br>
+                safari 브라우저로 접속한 뒤
+                <br>
+                아래 버튼을 누른 뒤 홈 화면에 추가해주세요.
+                (window.navigator is not standalone).
+                <img src="static/images/webpush-add-to-home-screen.jpg" alt="webpush add to some screen">
+            </div>
+
+            <div id="scan-qr-code">
+                이 페이지는 모바일에서만 사용가능합니다.
+                <br>
+                아래 QR코드를 스마트폰에서 스캔해주세요.
+                <br>
+                <img src="static/images/qrcode.png" alt="qrCode"><br><br>
+            </div>
+
+            <div id="menu-list">
+                <div class="container">
+                    <form action="/" method="get">
+                        <select name="day" aria-label="요일 선택">
+                            {% for index in range(days|length) %}
+                            <option value="{{ index }}" {% if index == day %}selected{% endif %}>{{ days[index] }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">요일로 메뉴 보기</button>
+                    </form>
+                    <div>
+                        <p>오늘은 {{ todayDate }} {{defaultdays}}입니다.</p>
+                    </div>
+                    <div class="breakfast">
+                        <h3 style="color: blue;">아침식단</h3>
+                        <div class="menulist">{{ todayBreakfast }}</div>
+                    </div>
+                    <div class="lunch">
+                        <h3 style="color: orange;">점심식단</h3>
+                        <div class="menulist">{{ todayLunch }}</div>
+                    </div>
+                    <div class="dinner">
+                        <h3 style="color: purple;">저녁식단</h3>
+                        <div class="menulist">{{ todayDinner }}</div>
+                    </div>
+                    <div class="gansik">
+                        <h3 style="color: red;">간식식단</h3>
+                        <div class="menulist">{{ todaySnack }}</div>
+                    </div>
+                    <div class="footer">
+                        <p>오늘의 접속자 수: {{ todayVisitors }}</p>
+                        <p>총 누적 접속자 수: {{ totalVisitors }}</p>
+                        문의는 pjs9177@naver.com으로 해주시기 바랍니다.
+                    </div> 
+                </div>
+            </div>
+
+            <button id="subscribe_btn" onclick="subscribeToPush()">Subscribe to notifications</button>
+
+            <div id="active_sub"></div>
+            <button id="test_send_btn" onclick="testSend()">Send test push</button>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+body {
+    font-family: "Nanum Gothic", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+*{
+    font-family: "UhBeeJJIBBABBA";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1rem;
+}
+@font-face {
+    font-family: 'LOTTERIADDAG';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/LOTTERIADDAG.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+font-family: 'UhBeeJJIBBABBA';
+src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeJJIBBABBA.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
+.title{
+    font-family: 'LOTTERIADDAG';
+    font-size: 2rem;
+    
+}
+.previous, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+.previous {
+    left: 30px;
+}
+
+.next {
+    right: 30px;
+}
+
+h2 {
+    font-weight: 600;
+    color: #222;
+}
+
+p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    padding: 20px;
+    /*box-shadow: 0 10px 25px rgba(0,0,0,0.1);*/
+}
+
+.menulist {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+@media screen and (max-width: 768px) {
+    .previous, .next {
+        top: initial;
+        bottom: 10px;
+    }
+
+    .container {
+        width: 95%;
+        height: auto;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .container {
+        width: 90%;
+        height: auto;
+    }
+}
+.footer {
+    font-size: 0.8rem;
+    line-height: 4;
+    
+}
+.do-hyeon-regular {
+    font-family: "Do Hyeon", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+.gamja-flower-regular {
+    font-family: "Gamja Flower", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
