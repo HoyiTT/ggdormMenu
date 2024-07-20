@@ -45,10 +45,10 @@
 <img width="631" alt="컴퓨터" src="https://github.com/user-attachments/assets/c817a241-c6a9-464d-8d8a-7310b214e7d6">
 
 ### IOS Safari 접속 시
-![IOS_safari](https://github.com/user-attachments/assets/8a263f81-7e37-4d7d-ad5a-6b9c4438a7eb)
+![IOS_Safari](https://github.com/user-attachments/assets/a3f48595-d3f3-440a-8ee0-793e56e87f28)
 
 ### IOS PWA 접속 시
-![IOS_PWA](https://github.com/user-attachments/assets/a3f48595-d3f3-440a-8ee0-793e56e87f28)
+![IOS_PWA](https://github.com/user-attachments/assets/8a263f81-7e37-4d7d-ad5a-6b9c4438a7eb)
 
 ## 링크
 
